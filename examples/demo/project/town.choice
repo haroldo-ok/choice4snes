@@ -1,0 +1,18 @@
+* background "title_bg.png"
+
+You return to the safety of the town.
+The villagers go about their day.
+* flush
+
+* if metGuard
+    You remember the guardian's words.
+    * flush
+
+Your score: ${score}
+* flush
+
+* choice
+    # Try the forest again
+        * goto_scene startup
+    # End your journey
+        * goto_scene ending
