@@ -1,6 +1,6 @@
 {
   "name": "choice4snes",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A ChoiceScript-inspired scripting engine that generates SNES ROMs via pvsneslib",
   "main": "index.js",
   "bin": { "choice4snes": "./index.js" },
