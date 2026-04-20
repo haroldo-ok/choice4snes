@@ -1,0 +1,23 @@
+* background "forest_bg.png"
+
+Deep in the forest, you find an old shrine.
+A mysterious figure stands guard.
+* flush
+
+* set metGuard, true
+* set score, score + 20
+
+* if score > 30
+    The guardian seems impressed by your courage.
+    * flush
+* else
+    The guardian eyes you suspiciously.
+    * flush
+
+* choice
+    # Speak to the guardian
+        The guardian whispers: "The path forward is yours to choose."
+        * flush
+        * goto_scene ending
+    # Run away
+        * goto_scene town

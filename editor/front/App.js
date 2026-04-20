@@ -78,7 +78,7 @@ export function App() {
 					<li><OpenFileExplorer projectName={projectName} /></li>
 				</ul>
 				<ul>
-					<li><strong>choice4genesis editor</strong></li>
+					<li><strong>choice4snes editor</strong></li>
 				</ul>			
 				<ul>
 					<li><RunButton projectName={projectName} onSaveAll={saveAll} /></li>					

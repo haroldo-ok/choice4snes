@@ -1,0 +1,29 @@
+* title "My SNES Visual Novel"
+* author "Your Name"
+
+* font "font.png"
+* background "title_bg.png"
+
+* create score, 0
+* create metGuard, false
+
+Welcome to my SNES visual novel!
+This text will appear in the window at the bottom of the screen.
+* flush
+
+* clear window
+* background "forest_bg.png"
+
+You find yourself at the edge of a dark forest.
+The wind rustles through the trees.
+* flush
+
+* choice
+    # Enter the forest
+        * set score, score + 10
+        * goto_scene forest
+    # Turn back
+        * goto_scene town
+    # Check your inventory
+        You search your pockets and find... nothing useful.
+        * flush

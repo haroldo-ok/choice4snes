@@ -1,0 +1,23 @@
+You have arrived at the second scene!
+
+* temp answer, false
+* temp tries, 3
+
+* while tries > 0 and !answer
+	Do you want to go back to the start?
+	* choice
+		# Yes, take me back!
+			* set answer, true
+		# Not yet...
+			* set tries, tries - 1
+			* if tries > 0
+				Okay, but you only have ${tries} chances left.
+
+* if answer
+	Great choice!
+* else
+	Fine, staying here then.
+
+* flush
+
+* goto_scene startup

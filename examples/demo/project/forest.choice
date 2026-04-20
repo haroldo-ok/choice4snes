@@ -1,0 +1,20 @@
+* background "forest_bg.png"
+
+You step into the forest.
+The trees close in around you.
+* flush
+
+* temp depth, 0
+
+* while depth < 2
+    You venture deeper...
+    * set depth, depth + 1
+    * flush
+
+* set score, score + 5
+
+* choice
+    # Continue deeper
+        * goto_scene forest_deep
+    # Go back to town
+        * goto_scene town

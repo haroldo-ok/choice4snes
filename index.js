@@ -1,63 +1,60 @@
-const { existsSync, mkdirSync, readFileSync, writeFileSync } = require('fs');
-const { normalize } = require('path');
-const { compact } = require('lodash');
+'use strict';
+
+/**
+ * choice4snes – index.js
+ * Main entry point.
+ */
+
 const chalk = require('chalk');
+const { compact } = require('lodash');
 
-const { transpile } = require('./generator/transpiler');
-const { compile } = require('./generator/compiler');
-const { emulate } = require('./generator/emulator');
-const { readCommandLine } = require('./generator/commandline');
-const { watchProject } = require('./generator/watcher');
-const { showMenu } = require('./generator/ui')
-const { showEditor } = require('./editor/editor')
-
+const { transpile }        = require('./generator/transpiler');
+const { compile }          = require('./generator/compiler');
+const { emulate }          = require('./generator/emulator');
+const { readCommandLine }  = require('./generator/commandline');
+const { watchProject }     = require('./generator/watcher');
+const { showMenu }         = require('./generator/ui');
+const { showEditor }       = require('./editor/editor');
 
 const commandLine = readCommandLine();
 
 const handleErrors = result => {
-	if (!result.errors || !result.errors.length) {
-		return 0;
-	}
-	
-	result.errors.forEach(({sourceName, line, message}) => {
-		console.error(chalk.red(compact([
-			sourceName && `${sourceName}.choice`,
-			line && `Error at line ${line}`,
-			message
-		]).join(': ')));
-	});
-	
-	return -1;
-}
-
+    if (!result || !result.errors || !result.errors.length) return 0;
+    result.errors.forEach(({ sourceName, line, message }) => {
+        console.error(chalk.red(compact([
+            sourceName && (sourceName + '.choice'),
+            line       && ('line ' + line),
+            message
+        ]).join(': ')));
+    });
+    return -1;
+};
 
 const COMMANDS = { transpile, compile, emulate };
 
 const executeCommands = async () => {
-	const commandNames = commandLine._.filter(command => command !== 'menu');
-	const commandsToExecute = compact((commandNames.length ? commandNames : ['transpile', 'compile', 'emulate'])
-		.map(command => COMMANDS[command]));
+    const commandNames = commandLine._.filter(c => !['menu', 'edit'].includes(c));
+    const toRun = compact(
+        (commandNames.length ? commandNames : ['transpile', 'compile', 'emulate'])
+        .map(name => COMMANDS[name])
+    );
 
-	for (execute of commandsToExecute) {
-		const result = await execute(commandLine);
-		const exitCode = handleErrors(result);
-		if (exitCode) {
-			return { exitCode };
-		}
-	}
-}
+    for (const execute of toRun) {
+        const result   = await execute(commandLine);
+        const exitCode = handleErrors(result);
+        if (exitCode) return { exitCode };
+    }
+};
 
 if (commandLine._.includes('menu')) {
-	showMenu(commandLine, executeCommands);
+    showMenu(commandLine, executeCommands);
 } else if (commandLine._.includes('edit')) {
-	showEditor(commandLine, executeCommands);
+    showEditor(commandLine, executeCommands);
 } else if (commandLine.watch) {
-	console.warn('The "watch" option is a bit unstable, right now.');
-	watchProject(commandLine, executeCommands);
+    console.warn(chalk.yellow('Warning: --watch mode is experimental.'));
+    watchProject(commandLine, executeCommands);
 } else {
-	executeCommands().then(finalResult => {
-		if (finalResult && finalResult.exitCode) {
-			process.exit(-1);
-		}
-	});
+    executeCommands().then(finalResult => {
+        if (finalResult && finalResult.exitCode) process.exit(-1);
+    });
 }

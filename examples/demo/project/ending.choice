@@ -1,0 +1,13 @@
+* background "title_bg.png"
+
+Your adventure comes to an end.
+* flush
+
+Final score: ${score}
+* flush
+
+Thank you for playing!
+Press any button to restart.
+* flush
+
+* goto_scene startup
